@@ -1,0 +1,59 @@
+create DATABASE StudentManagementSystem
+use studentManagementSystem
+
+CREATE TABLE [dbo].[Students] (
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Name]        NVARCHAR (50) NOT NULL,
+    [Surname]     NVARCHAR (50) NOT NULL,
+    [DateofBirth] DATE          NULL,
+    [Email]       VARCHAR (50)  NOT NULL,
+    [Gender]      NVARCHAR (50) NULL,
+    [Address]     NVARCHAR (50) NULL,
+    CONSTRAINT [PK_Students] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+CREATE TABLE [dbo].[Courses] (
+    [id]          INT           IDENTITY (1, 1) NOT NULL,
+    [CourseName]  NVARCHAR (50) NOT NULL,
+    [Department]  NVARCHAR (50) NOT NULL,
+    [Description] TEXT          NULL,
+    [Credits]     INT           NOT NULL,
+    CONSTRAINT [PK_Courses] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+
+CREATE TABLE [dbo].[Instructors] (
+    [id]            INT           IDENTITY (1, 1) NOT NULL,
+    [Name]          NVARCHAR (50) NOT NULL,
+    [Surname]       NVARCHAR (50) NOT NULL,
+    [Email]         NVARCHAR (50) NOT NULL,
+    [ContactNumber] INT           NULL,
+    [Department]    INT           NOT NULL,
+    CONSTRAINT [PK_Instructors] PRIMARY KEY CLUSTERED ([id] ASC)
+);
+
+
+CREATE TABLE [dbo].[Enrollment] (
+    [id]        INT           IDENTITY (1, 1) NOT NULL,
+    [StudentID] INT           NULL,
+    [CourseId]  INT           NULL,
+    [Date]      DATETIME2 (7) NULL,
+    CONSTRAINT [PK_Enrollment] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [FK_Enrollment_Course] FOREIGN KEY ([CourseId]) REFERENCES [dbo].[Courses] ([id]),
+    CONSTRAINT [FK_Enrollment_Student] FOREIGN KEY ([StudentID]) REFERENCES [dbo].[Students] ([Id])
+);
+
+
+CREATE TABLE [dbo].[ClassSchedule] (
+    [id]           INT           IDENTITY (1, 1) NOT NULL,
+    [CourseID]     INT           NULL,
+    [InstructorID] INT           NULL,
+    [StartTime]    DATETIME2 (7) NULL,
+    [EndTime]      DATETIME2 (7) NULL,
+    CONSTRAINT [PK_ClassSchedule] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [FK_ClassSchedule_Courses] FOREIGN KEY ([CourseID]) REFERENCES [dbo].[Courses] ([id])
+);
+
+
+
+select * from ClassSchedule
